@@ -1,0 +1,52 @@
+# ── Run outputs ──────────────────────────────────────────────────────────────
+cm_minimal/runs/
+matlab/cm_minimal/runs/
+
+# ── Large input data (kept in Dropbox, not the repo) ─────────────────────────
+*.txt
+*.csv
+*.xlsx
+*.mat
+
+# Allow the example figures and requirements committed to the repo
+!docs/images/*.png
+!requirements.txt
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# ── Virtual environments ──────────────────────────────────────────────────────
+.venv/
+venv/
+env/
+.env
+
+# ── Jupyter ───────────────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb
+
+# ── OS / editor ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── R ─────────────────────────────────────────────────────────────────────────
+.Rhistory
+.RData
+.Rproj.user/
+
+# ── MATLAB (archive only, large binaries) ─────────────────────────────────────
+matlab/**/*.mat
+matlab/**/*.fig
