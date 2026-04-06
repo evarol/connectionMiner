@@ -220,21 +220,45 @@ Each run writes to `cm_minimal/runs/run_YYYYMMDD_HHMMSS/`:
 | `synaptic_interaction_table.xlsx` | Gene pairs scored per synapse with effect sizes |
 | `viz/` | Diagnostic PNG figures (see examples above) |
 
-### `type_gene_probabilities.xlsx`
+### Output 1 — `type_gene_probabilities.xlsx`
 
-One row per neuron type. Columns:
+One row per neuron type (~730 rows). This is the primary deconvolution output: for each inferred type it reports how many cells were assigned to it, how confidently, and what gene expression profile was inferred.
 
 | Column | Description |
 |---|---|
 | `type_name` | Neuron type identifier |
-| `n_cells` | Cells assigned to this type |
-| `cell_contributions` | Weighted cell contribution score |
-| `identifiable` | Whether the type has non-zero mass |
-| `{gene}_prob` | Inferred expression probability for each gene |
+| `n_cells` | Number of cells whose maximum-probability assignment is this type |
+| `cell_contributions` | **Weighted** cell mass assigned to this type across all cells (includes partial/soft assignments, not just max-probability) |
+| `identifiable` | `1` if the type received non-zero probability mass from the solver; `0` if it could not be resolved (e.g. too few cells, ambiguous constraints) — expression values are set to `NaN` for non-identifiable types |
+| `{gene}_prob` | Inferred expression probability for each gene (one column per gene, across all shared genes) |
 
-### `synaptic_interaction_table.xlsx`
+> **`n_cells` vs `cell_contributions`**: `n_cells` counts hard assignments (each cell counted once, to its most likely type). `cell_contributions` is the soft total — summing the solver's probability weight for this type across all cells. A type with a large `cell_contributions` but small `n_cells` indicates cells that are ambiguously spread across multiple types.
 
-One row per (synapse, gene pair) combination. Columns include synapse name, pre/post type identifiers, lineage, motor pool, interaction name, expression levels, interaction score, effect size, and p-value. Pruned to the top/bottom scoring entries per synapse.
+---
+
+### Output 2 — `synaptic_interaction_table.xlsx`
+
+One row per **(synapse × gene pair)** combination. This table scores every candidate ligand–receptor interaction at every measured synaptic connection, reporting whether that gene pair is specifically enriched at that synapse compared to non-synaptically connected type pairs.
+
+| Column | Description |
+|---|---|
+| `SynapseName` | `preType → postType` synapse identifier |
+| `preSynapseName` / `postSynapseName` | Pre- and post-synaptic type names |
+| `preSynapseType` / `postSynapseType` | `"preMN"` or `"MN"` |
+| `preSynapseLineage` / `postSynapseLineage` | Developmental lineage of each partner |
+| `preSynapseMotorPool` / `postSynapseMotorPool` | Motor pool of each partner |
+| `interactionName` | `geneA → geneB` (directed ligand–receptor pair from interactome) |
+| `preInteractionName` / `postInteractionName` | Individual pre- and post-synaptic gene names |
+| `synapseStrength` | Raw synapse count from the connectome |
+| `geneCoExp` | Co-expression score: pre-gene probability × post-gene probability |
+| `preGeneExp` / `postGeneExp` | Individual gene expression probabilities at pre/post type |
+| `effectSize` | Mean difference in gene-pair co-expression product between synaptically connected and non-synaptically connected type pairs (t-test); positive = enriched at this synapse |
+| `preEffectSize` / `postEffectSize` | Pre- and post-synaptic contributions to the effect size separately |
+| `interactionScore` | `geneCoExp × effectSize` — combined ranking score |
+| `pValue` | Combined significance (Fisher normal method across pre + post t-tests) |
+| `prePvalue` / `postPvalue` | Individual p-values for pre- and post-synaptic sides |
+
+The table is pruned to the **top 3 highest**, **top 3 lowest**, and **top 3 lowest p-value** entries per synapse to keep the file within Excel's row limit. The full unpruned table can exceed 1 M rows across all type pairs and gene combinations.
 
 ---
 
