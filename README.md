@@ -282,7 +282,19 @@ cfg = merge_config(default_config("binary"), {
 
 If you use ConnectionMiner in your research, please cite:
 
-> *manuscript in preparation*
+> Gupta, H.P., Azevedo, A., Chen, Y.-C.D., Xing, K., Sims, P.A., Varol, E., & Mann, R.S. (2025). **Decoding neuronal wiring by joint inference of cell identity and synaptic connectivity.** *bioRxiv*. https://doi.org/10.1101/2025.03.04.640006
+
+**BibTeX:**
+```bibtex
+@article{gupta2025decoding,
+  title   = {Decoding neuronal wiring by joint inference of cell identity and synaptic connectivity},
+  author  = {Gupta, Himanshu Pawankumar and Azevedo, Anthony and Chen, Yu-Chieh David and Xing, Kristi and Sims, Peter A. and Varol, E. and Mann, Richard S.},
+  journal = {bioRxiv},
+  year    = {2025},
+  doi     = {10.1101/2025.03.04.640006},
+  url     = {https://doi.org/10.1101/2025.03.04.640006}
+}
+```
 
 ---
 

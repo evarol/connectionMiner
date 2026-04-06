@@ -1,6 +1,5 @@
 # ── Run outputs ──────────────────────────────────────────────────────────────
 cm_minimal/runs/
-matlab/cm_minimal/runs/
 
 # ── Large input data (kept in Dropbox, not the repo) ─────────────────────────
 *.txt
@@ -47,6 +46,5 @@ Thumbs.db
 .RData
 .Rproj.user/
 
-# ── MATLAB (archive only, large binaries) ─────────────────────────────────────
-matlab/**/*.mat
-matlab/**/*.fig
+# ── MATLAB (excluded entirely) ───────────────────────────────────────────────
+matlab/
