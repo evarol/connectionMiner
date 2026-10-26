@@ -1,0 +1,201 @@
+{
+ "name": "pg_affine_d40_w64_lv10_r1",
+ "optimizer_mode": "pg_gem",
+ "head_mode": "affine",
+ "latent_dim": 40,
+ "hidden_widths": [
+  64,
+  64
+ ],
+ "lambda_output": 10.0,
+ "restart": 1,
+ "tag": null,
+ "warm_start": null,
+ "val_nll": 0.17747650130980064,
+ "val_brier": 0.05541223422506786,
+ "val_auc": 0.9652464455679138,
+ "test_nll": 0.17753873004237608,
+ "test_brier": 0.05542761466406288,
+ "test_auc": 0.9653003670174947,
+ "final_F": 53027597.380779184,
+ "final_nll_train": 52673362.18757959,
+ "iterations": 250,
+ "termination": "max_outer",
+ "monotone": true,
+ "rejected_outer": 0,
+ "z_unit_accepted": 41150000,
+ "z_unit_rejected": 0,
+ "hidden_accepted": 2480,
+ "hidden_rejected": 2,
+ "head_unit_accepted": 0,
+ "head_unit_rejected": 0,
+ "head_solves": 500,
+ "seconds": 3401.507519006729,
+ "score_seconds": 5.9737420082092285,
+ "max_rss_gb": 6.848561152,
+ "val_calibration": [
+  {
+   "bin": 0,
+   "mean_pred": 0.00985103938728571,
+   "frac_pos": 0.010449176872478831,
+   "count": 5503400
+  },
+  {
+   "bin": 1,
+   "mean_pred": 0.146657332777977,
+   "frac_pos": 0.15206816571097223,
+   "count": 434588
+  },
+  {
+   "bin": 2,
+   "mean_pred": 0.24795912206172943,
+   "frac_pos": 0.2520805151573711,
+   "count": 320834
+  },
+  {
+   "bin": 3,
+   "mean_pred": 0.34843870997428894,
+   "frac_pos": 0.3499518425541626,
+   "count": 258527
+  },
+  {
+   "bin": 4,
+   "mean_pred": 0.44864583015441895,
+   "frac_pos": 0.4460547430405384,
+   "count": 218731
+  },
+  {
+   "bin": 5,
+   "mean_pred": 0.5490737557411194,
+   "frac_pos": 0.5429761140229123,
+   "count": 193084
+  },
+  {
+   "bin": 6,
+   "mean_pred": 0.6496508121490479,
+   "frac_pos": 0.6396256023861726,
+   "count": 179702
+  },
+  {
+   "bin": 7,
+   "mean_pred": 0.7502135634422302,
+   "frac_pos": 0.7402900125034654,
+   "count": 176751
+  },
+  {
+   "bin": 8,
+   "mean_pred": 0.8516898155212402,
+   "frac_pos": 0.8424188049524494,
+   "count": 195055
+  },
+  {
+   "bin": 9,
+   "mean_pred": 0.9743720293045044,
+   "frac_pos": 0.9733748638055214,
+   "count": 565368
+  }
+ ],
+ "test_calibration": [
+  {
+   "bin": 0,
+   "mean_pred": 0.009852442890405655,
+   "frac_pos": 0.010456922854067094,
+   "count": 5502001
+  },
+  {
+   "bin": 1,
+   "mean_pred": 0.14669552445411682,
+   "frac_pos": 0.15198945338922606,
+   "count": 434642
+  },
+  {
+   "bin": 2,
+   "mean_pred": 0.24798373878002167,
+   "frac_pos": 0.2523134060515269,
+   "count": 320415
+  },
+  {
+   "bin": 3,
+   "mean_pred": 0.3484126031398773,
+   "frac_pos": 0.34995003029051885,
+   "count": 259157
+  },
+  {
+   "bin": 4,
+   "mean_pred": 0.44876641035079956,
+   "frac_pos": 0.44809600484428114,
+   "count": 217989
+  },
+  {
+   "bin": 5,
+   "mean_pred": 0.5490766763687134,
+   "frac_pos": 0.5443914711226375,
+   "count": 193179
+  },
+  {
+   "bin": 6,
+   "mean_pred": 0.6495615839958191,
+   "frac_pos": 0.6424676836365865,
+   "count": 179553
+  },
+  {
+   "bin": 7,
+   "mean_pred": 0.7502484321594238,
+   "frac_pos": 0.7417047877877371,
+   "count": 177723
+  },
+  {
+   "bin": 8,
+   "mean_pred": 0.8514941930770874,
+   "frac_pos": 0.8423417902520733,
+   "count": 195816
+  },
+  {
+   "bin": 9,
+   "mean_pred": 0.9744418859481812,
+   "frac_pos": 0.9732248573150413,
+   "count": 564180
+  }
+ ],
+ "config": {
+  "latent_dim": 40,
+  "hidden_widths": [
+   64,
+   64
+  ],
+  "activation": "tanh",
+  "head_mode": "affine",
+  "nonlinear_head_rho": 1.0,
+  "optimizer_mode": "pg_gem",
+  "dtype": "float32",
+  "device": "cpu",
+  "lambda_z": 1.0,
+  "lambda_hidden": 0.01,
+  "lambda_output": 10.0,
+  "lambda_bias": 0.01,
+  "max_outer": 250,
+  "tol": 2e-05,
+  "max_seconds": 4200.0,
+  "inner_steps": 10,
+  "inner_rounds": 1,
+  "head_steps": 2,
+  "resolve_head": true,
+  "step_init": 1.0,
+  "adaptive_step": true,
+  "step_max": 1000000.0,
+  "backtrack": 0.5,
+  "armijo": 0.25,
+  "max_trials": 12,
+  "grad_tol": 1e-30,
+  "monotone_rtol": 1e-07,
+  "seed": 2,
+  "n_restarts": 1,
+  "z_init_scale": 0.1,
+  "head_init_scale": 0.01,
+  "bias_init": "column_logit",
+  "bias_pseudocount": 0.5,
+  "chunk_rows": 2048,
+  "val_every": 1,
+  "verbose": false
+ }
+}

@@ -1,0 +1,315 @@
+{
+ "out": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/v4/deck/NineRepresentations_v4_main.pptx",
+ "start": 1,
+ "jpeg": {
+  "max_w": 1800,
+  "quality": 76
+ },
+ "slides": [
+  {
+   "kind": "title",
+   "title": "Nine ways to represent a single-cell matrix",
+   "bullets": [
+    "Detection probabilities, count models and cell embeddings, compared under one protocol, with uncertainty",
+    "Fly premotor neurons, 24 h APF: 16,460 cells × 19,543 genes",
+    "ConnectionMiner · v4 after a strict internal review · 25 Oct 2026"
+   ]
+  },
+  {
+   "title": "The question",
+   "bullets": [
+    "We want one representation of the cells × genes matrix to build on. It has two jobs: predict which genes each cell detects, and place cells so that hemilineage and birth time are near while library and sequencing depth are not.",
+    "Nine representations (R1–R9) plus two standard comparators for the embedding part (Pearson residuals, scVI). Seven models output a probability for every entry.",
+    "Sequencing depth is the main nuisance, and it is partly biology: hemilineage and birth time explain a third of its variance."
+   ]
+  },
+  {
+   "title": "What changed after the review",
+   "bullets": [
+    "Three independent reviews (statistics, code, claims) found no leakage or scoring bug, but several conclusions in v3 did not hold. This deck reruns the affected analyses."
+   ],
+   "image": "v4/equations/v4_errata.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 1",
+   "title": "Methods and how they are scored",
+   "bullets": [
+    "One page per model family, where each puts sequencing depth, and one evaluation protocol for all. Detailed derivations are in the appendix."
+   ]
+  },
+  {
+   "title": "Nine representations at a glance",
+   "bullets": [
+    "Colours used throughout: blue = reference pipelines, red/teal/purple = low-rank detection models, orange = NB counts, green/pink/light blue = structured detection models."
+   ],
+   "image": "v3/biorender/v3_methods_map.png"
+  },
+  {
+   "title": "Every model in one table",
+   "bullets": [],
+   "image": "v3/equations/v3_models.png"
+  },
+  {
+   "title": "R3–R5: low-rank detection models (BernFac family)",
+   "bullets": [
+    "R3 is a logistic PCA. R4 adds a cell and a gene offset. R5 swaps the logistic link for the complementary log-log, under which p = 0.63 at ψ = 0 and depth acts as a rate."
+   ],
+   "image": "v4/biorender/v4_bernfac_family.png"
+  },
+  {
+   "title": "R6: factorize the counts themselves",
+   "bullets": [
+    "Negative-binomial factorization of raw UMI counts with log library size as an offset; essentially an NB GLM-PCA. Detection probability is Pr(count ≥ 1), scored on the same entries as the binary models. Poisson is fitted the same way."
+   ],
+   "image": "biorender/bernfac_5_count_models.png"
+  },
+  {
+   "title": "R7–R9: structured detection models",
+   "bullets": [
+    "R7: each cell's logits lie near one of K local subspaces (K = 1 chosen). R8: a learned coordinate z per cell and a shared decoder. R9: cells and genes are co-clustered, one probability per block."
+   ],
+   "image": "v4/biorender/v4_structured_models.png"
+  },
+  {
+   "title": "Where sequencing depth goes in each model",
+   "bullets": [
+    "R4–R6 give depth its own cell offset, so their probabilities can be recomputed at a common depth. R3 and R7–R9 absorb depth into their latent factors. R1 divides by library size, which removes depth only partly."
+   ],
+   "image": "v4/biorender/v4_depth_schematic.png"
+  },
+  {
+   "title": "Observed and depth-adjusted probabilities",
+   "bullets": [
+    "p̂ (each cell at its own depth) is what is scored. p̃ (cell offset at the median) is a depth-adjusted view; it is not a prediction and is never scored by NLL."
+   ],
+   "image": "v3/equations/v3_depth.png"
+  },
+  {
+   "title": "Fitting every model",
+   "bullets": [],
+   "image": "v3/equations/v3_inference.png"
+  },
+  {
+   "title": "How every model is evaluated",
+   "bullets": [
+    "Held-out entries scattered over the whole matrix, chosen on validation, scored on test with a paired bootstrap over cells and genes. Synthetic worlds with known truth. One embedding protocol for everyone."
+   ],
+   "image": "v4/biorender/v4_evaluation_design.png"
+  },
+  {
+   "title": "Prediction metrics and uncertainty",
+   "bullets": [],
+   "image": "v4/equations/v4_metrics_pred.png"
+  },
+  {
+   "title": "Representation metrics",
+   "bullets": [],
+   "image": "v4/equations/v4_metrics_rep.png"
+  },
+  {
+   "title": "What is tuned and what was chosen",
+   "bullets": [
+    "R8, Poisson and R9 were chosen at the edge of their grids and are flagged wherever they appear."
+   ],
+   "image": "v4/equations/v4_hyperparams.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 2",
+   "title": "Synthetic data: which model recovers the truth?",
+   "bullets": [
+    "Five worlds, each built in the image of one model family, 3 seeds each. Every grid contains the true rank, and every configuration was scored against the truth."
+   ]
+  },
+  {
+   "title": "Five synthetic worlds with known probabilities",
+   "bullets": [
+    "2,000 cells × 300 genes, mean detection 0.18. In G1, G4 and G5 the counts behind Y are artificial (Y × (1 + Poisson(1))); a control with genuine counts is shown on the next slides."
+   ],
+   "image": "v3/figures/fig_syn_design.png"
+  },
+  {
+   "title": "Tuning on the synthetic worlds",
+   "bullets": [
+    "Validation loss for every configuration, the chosen one boxed (orange at a grid edge) and the best in hindsight starred. The factor models land on the true rank; R7, R8 and R9 often pick an edge value."
+   ],
+   "image": "v4/figures/fig_syn_select_v4.png"
+  },
+  {
+   "title": "Distance to the true probabilities",
+   "bullets": [
+    "Each family wins the world built for it: NB counts in G2, the neural manifold in G4, latent blocks in G5; the mixture leads G1 and G3. Validation picks the best-in-hindsight setting almost everywhere. With genuine counts in G1, NB counts become the best method there."
+   ],
+   "image": "v4/figures/fig_syn_kl_v4.png"
+  },
+  {
+   "title": "Do the embeddings recover the true cell groups?",
+   "bullets": [
+    "Processed counts look best only when they see every entry. Given the same 70% of entries as the models, the count models lead on cell types and the mixture leads on blocks."
+   ],
+   "image": "v4/figures/fig_syn_embed_v4.png"
+  },
+  {
+   "title": "Does depth adjustment recover the truth?",
+   "bullets": [
+    "Setting each cell's offset to the median recovers the true depth-adjusted probabilities about as well as the model recovers the observed ones. R4 leaves the least depth; Poisson leaves depth in NB worlds; R6 and Poisson over-correct in G4."
+   ],
+   "image": "v4/figures/fig_syn_depthstd.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 3",
+   "title": "Real data: held-out prediction",
+   "bullets": [
+    "Settings chosen on 8.05 M validation entries; 8.04 M test entries; paired two-way bootstrap over cells and genes."
+   ]
+  },
+  {
+   "title": "Model selection for every family",
+   "bullets": [
+    "Validation NLL across each grid after the refits, with grid edges marked. NB k = 160 is worse than k = 120 because it overfits (warm and cold starts agree). Larger R4 configurations get worse. Poisson improves to k = 120 but stays far behind NB."
+   ],
+   "image": "v4/figures/fig_select_all_v4.png"
+  },
+  {
+   "title": "Held-out prediction with 95% intervals",
+   "bullets": [
+    "NB counts beat every other model by about 1 × 10⁻³ nats per entry. Among the binary models R7 < R4 < R3 are resolvable but within 0.2 × 10⁻³; R4, R5 and R8 cannot be separated."
+   ],
+   "image": "v4/figures/fig_test_ci.png"
+  },
+  {
+   "title": "Where NB's lead comes from",
+   "bullets": [
+    "The lead over R4 holds at every sequencing depth and comes from frequently detected genes; about 230 bursty wiring and TF genes (beat, DIP, dpr families, zld, RunxA) carry half of it. In the rarest genes the mixture and neural models are marginally better."
+   ],
+   "image": "v4/figures/fig_test_ci_deciles.png"
+  },
+  {
+   "title": "Refitted grid edges",
+   "bullets": [
+    "Extended grids change no conclusion. With an iteration budget instead of a time limit, the neural manifold at d = 40 moves ahead of R4 and ties the mixture; its setting is at a grid corner and not converged."
+   ],
+   "image": "v4/figures/fig_test_ci_v4refits_nll.png"
+  },
+  {
+   "title": "Why NB beats Poisson",
+   "bullets": [
+    "At the same rank NB beats Poisson by 4 to 9 × 10⁻³ nats. The gain is on observed zeros of bursty genes: Poisson ties detection to the mean count. The fitted dispersion runs to its bound mainly for rare genes, where it cannot be estimated."
+   ],
+   "image": "v4/figures/fig_nb_vs_poisson.png"
+  },
+  {
+   "title": "Calibration on test entries",
+   "bullets": [
+    "All models except Poisson are calibrated to within 0.7 percentage points. Poisson over-predicts above p̂ ≈ 0.05, most near 0.89 (+2.3 points). Models differ only in the extreme tails (p̂ < 10⁻⁴ or > 0.999), not in the share of p̂ below 0.01 (51–53% for all)."
+   ],
+   "image": "v3/figures/fig_calibration_all.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 4",
+   "title": "Cell maps under one protocol",
+   "bullets": [
+    "Every embedding centred, rotated to principal axes and compared at 20 and 40 dimensions, unwhitened and whitened. Clustering at a fixed 23 clusters over 5 seeds."
+   ]
+  },
+  {
+   "title": "Coloured by hemilineage",
+   "bullets": [
+    "UMAPs of all eleven representations with the same settings; R3–R5 from the train-only fits. For illustration only: the quantitative comparison is on the next slides."
+   ],
+   "image": "v4/figures/fig_umap_grid_hemilineage_v4.png"
+  },
+  {
+   "title": "Coloured by sequencing depth",
+   "bullets": [
+    "A high-depth region is visible in R3 and R7 and weaker in R1, R6, R10 and R11. The deepest cells are mostly primary neurons, so part of this is biology."
+   ],
+   "image": "v4/figures/fig_umap_grid_depth_v4.png"
+  },
+  {
+   "title": "Hemilineage under a fair protocol",
+   "bullets": [
+    "Hemilineage information is nearly equal across models (linear probe 0.97–0.99 at d = 40); whitening closes most of the kNN and clustering gap that v3 attributed to the models. At 40 whitened dimensions NB counts gives the best 23-cluster agreement (ARI 0.74); at 20, processed counts leads."
+   ],
+   "image": "v4/figures/fig_rep_fair.png"
+  },
+  {
+   "title": "How much depth each embedding carries",
+   "bullets": [
+    "Depth measured the same way for all on principal axes. A low first-axis correlation can hide depth: R8's top axes predict depth with R² ≈ 0.9. Within hemilineage × birth time, Pearson residuals, scVI and NB counts keep the least depth."
+   ],
+   "image": "v4/figures/fig_depth_axes_v4.png"
+  },
+  {
+   "title": "Library, sex and birth time",
+   "bullets": [
+    "Library signal within hemilineage is near chance for gene-subset methods (R1, R10, R11) and about 0.2 for all-gene factor models. The sex label is almost exactly roX expression (AUC 0.998); within mixed-sex libraries only the all-gene factor models decode it."
+   ],
+   "image": "v4/figures/fig_confounds.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 5",
+   "title": "Cells × genes: observed and depth-adjusted",
+   "bullets": [
+    "Five hemilineages, shallow and deep cells, marker, depth-sensitive, rare and ubiquitous genes. These slides illustrate; the quantitative checks follow them."
+   ]
+  },
+  {
+   "title": "What each model predicts",
+   "bullets": [
+    "All probability models reproduce the hemilineage marker blocks and fill dropouts within them. R9 blurs them because one probability is shared by a whole block."
+   ],
+   "image": "v3/figures/fig_heat_overview.png"
+  },
+  {
+   "title": "Observed and depth-adjusted probabilities",
+   "bullets": [
+    "R4–R6 shown observed and with every cell at the median depth. Shallow and deep cells of one hemilineage look alike after adjustment, and markers stay. R3 and R7–R9 have no depth term to adjust."
+   ],
+   "image": "v3/figures/fig_heat_std_overview.png"
+  },
+  {
+   "title": "Depth-sensitive genes, chosen on held-out cells",
+   "bullets": [
+    "Genes chosen on one half of the cells and scored on the other give the same depth gap, so the v3 result was not a selection artefact. Adjustment cuts the gap from 0.40 to 0.23 (R4), 0.15 (R5) and 0.13 (R6). About a third of the gap is birth time."
+   ],
+   "image": "v4/figures/fig_std_depthgenes_heldout.png"
+  },
+  {
+   "title": "How much depth the adjusted probabilities keep",
+   "bullets": [
+    "p̃ is depth-adjusted, not depth-free: depth R² from its top axes is 0.41 (R6), 0.66 (R5) and 0.87 (R4), against 0.61 for log-normalised counts. Marker structure is kept (variance ratio 0.98–1.02). p̃ also removes most within-hemilineage birth-time variance on typical genes, so over-correction cannot be ruled out on real data."
+   ],
+   "image": "v4/figures/fig_std_rigor.png"
+  },
+  {
+   "title": "Choice of the reference depth",
+   "bullets": [
+    "Moving the reference from the 10th to the 90th depth percentile shifts the level of p̃ (mean 0.15 to 0.23); gene-level depth correlations, hemilineage profiles and the ordering R6 < R5 < R4 do not change."
+   ],
+   "image": "v4/figures/fig_std_reference.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 6",
+   "title": "Which one to work with?",
+   "bullets": []
+  },
+  {
+   "title": "Scorecard",
+   "bullets": [
+    "One definition per column, all from the v4 analyses. Prediction differences carry 95% bootstrap intervals; Leiden values are mean ± sd over 5 seeds."
+   ],
+   "image": "v4/figures/fig_scorecard_v4.png"
+  },
+  {
+   "title": "Recommendation",
+   "bullets": [],
+   "image": "v4/equations/v4_recommendation.png"
+  }
+ ]
+}

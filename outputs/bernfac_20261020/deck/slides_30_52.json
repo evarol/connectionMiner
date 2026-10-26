@@ -1,0 +1,153 @@
+{
+ "out": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/deck/BernFac_models_slides30-52.pptx",
+ "start": 30,
+ "slides": [
+  {
+   "title": "Full dataset: held-out CV over λ × k",
+   "image": "full/figures/fig_full_cv.png",
+   "bullets": [
+    "5% (16.1 M) entries held out. Solid: logit UVᵀ; dashed: logit + offsets; dotted purple: cloglog + offsets. All three tie at the optimum (NLL 0.1777–0.1778, AUC 0.965) and beat cell + gene baselines (logistic 0.1854, cloglog 0.1845). Every fit monotone in J."
+   ]
+  },
+  {
+   "title": "Full dataset: every cell × every detected gene",
+   "image": "full/figures/fig_full_triptych.png",
+   "bullets": [
+    "At this scale most of the 19,543 genes are rarely detected, so area-averaged views are dominated by broadly expressed genes; P̂ tracks detection density across the whole matrix."
+   ]
+  },
+  {
+   "title": "Full dataset: all cells × 40 marker genes per hemilineage",
+   "image": "full/figures/fig_full_triptych_markers.png",
+   "bullets": [
+    "920 genes most enriched per hemilineage. The block diagonal appears in counts, binary Y and P̂; P̂ fills dropouts inside each block."
+   ]
+  },
+  {
+   "title": "Full dataset: zoom, every entry visible",
+   "image": "full/figures/fig_full_triptych_zoom.png",
+   "bullets": [
+    "10 cells per hemilineage × 3 marker genes per hemilineage (23 hemilineages). Sparse detections become consistent within-type probabilities."
+   ]
+  },
+  {
+   "title": "Adding cell and gene offsets",
+   "image": "equations/eq_offsets.png",
+   "bullets": []
+  },
+  {
+   "title": "Complementary log-log link: depth as a multiplicative rate",
+   "image": "equations/eq_cloglog.png",
+   "bullets": []
+  },
+  {
+   "title": "Model 4: factorize the UMI counts directly",
+   "image": "biorender/bernfac_5_count_models.png",
+   "bullets": [
+    "Poisson and negative-binomial factorizations of the raw counts, with each cell's training total as a depth offset. Detection probabilities follow from P(count ≥ 1), so they can be scored against the same held-out entries as the binary models."
+   ]
+  },
+  {
+   "title": "Count factorization: model and fitting",
+   "image": "equations/eq_counts.png",
+   "bullets": []
+  },
+  {
+   "title": "Count models: selection on validation",
+   "image": "models/counts/figures/fig_selection.png",
+   "bullets": [
+    "NB beats Poisson at every setting and improves with rank up to k = 120 (k = 160 is worse). Poisson's test score is hurt by a few genes predicted at very high counts that were actually zero."
+   ]
+  },
+  {
+   "title": "Model 5: Bernoulli mixture of local factor models",
+   "image": "biorender/bernfac_6_mixture_local_factors.png",
+   "bullets": [
+    "Each cell's logits sit near one of K local affine subspaces. Inference is variational: every cell and component keeps its own Gaussian posterior and Pólya–Gamma bound."
+   ]
+  },
+  {
+   "title": "Mixture of local factors: model and variational EM",
+   "image": "equations/eq_mfa.png",
+   "bullets": []
+  },
+  {
+   "title": "Mixture of local factors: the latent dimension matters most",
+   "image": "models/mfa/figures/full_d_sweep.png",
+   "bullets": [
+    "Validation selects K = 1, d = 40 with zero residual variance (test NLL 0.1775); d = 80 is no better. Extra components overfit, and positive residual variance converges more slowly without helping."
+   ]
+  },
+  {
+   "title": "Model 6: nonlinear latent manifold with a neural decoder",
+   "image": "biorender/bernfac_7_neural_manifold.png",
+   "bullets": [
+    "Every cell gets a learned low-dimensional coordinate z, and a shared network maps z to one logit per gene. There is no encoder; z and the network are fit jointly by MAP."
+   ]
+  },
+  {
+   "title": "Neural manifold: objective and PG-GEM",
+   "image": "equations/eq_neural.png",
+   "bullets": []
+  },
+  {
+   "title": "Neural manifold: PG-GEM versus direct BCE",
+   "image": "models/neural/figures/fig_neural_traces.png",
+   "bullets": [
+    "Same start, same 25 minutes: PG-GEM lowers the original objective faster and reaches validation NLL 0.1776 against 0.1786 for direct gradient descent on the BCE loss. Validation selects an affine head, d = 20 (test NLL 0.1777)."
+   ]
+  },
+  {
+   "title": "Model 7: Bernoulli latent block model",
+   "image": "biorender/bernfac_8_latent_block_model.png",
+   "bullets": [
+    "Cells and genes are clustered at the same time, and each cell-group × gene-group block has one detection log-odds. Labels are mean-field responsibilities; predictions average block probabilities."
+   ]
+  },
+  {
+   "title": "Latent block model: mean-field updates",
+   "image": "equations/eq_lbm.png",
+   "bullets": []
+  },
+  {
+   "title": "Latent block model: selection over groups",
+   "image": "models/lbm/figures/lbm_full_selection_heatmap.png",
+   "bullets": [
+    "Validation NLL keeps falling up to 200 × 200 groups (test NLL 0.1830), still well behind the factor models. Cell groups follow sequencing depth more than hemilineage (ARI 0.06)."
+   ]
+  },
+  {
+   "title": "All models on the same held-out test entries",
+   "image": "models/figures/fig_model_comparison.png",
+   "bullets": [
+    "NB counts predict detection best (test NLL 0.1766). Five binary models land within 0.0003 of each other; latent blocks and Poisson trail. Validation chose every setting; test was scored once."
+   ]
+  },
+  {
+   "title": "UMAPs: processed counts vs binary Y vs BernFac variants",
+   "image": "full/figures/fig_full_umap_slide.png",
+   "bullets": [
+    "Top: hemilineage; bottom: sequencing depth. Each modelling step shrinks the depth-driven mixed mass (R3 → R4 → R5); processed counts (R1) still give the cleanest hemilineage islands."
+   ]
+  },
+  {
+   "title": "UMAPs: the new models next to processed counts",
+   "image": "full/figures/fig_full_umap_slide_new_models.png",
+   "bullets": [
+    "NB count factors and the neural manifold give separated hemilineage islands close to processed counts; the mixture embedding keeps a depth gradient, and latent blocks fragment cells into 200 groups."
+   ]
+  },
+  {
+   "title": "Which representation reflects biology best?",
+   "image": "full/figures/fig_full_rep_comparison.png",
+   "bullets": [
+    "NB count factors (6) give the best hemilineage clustering (ARI 0.67) and match processed counts (1) on kNN accuracy and purity within 0.02. The neural manifold (8) mixes libraries almost as well as processed counts. Binary models keep a strong depth axis."
+   ]
+  },
+  {
+   "title": "Conclusions and next steps",
+   "image": "equations/eq_conclusions.png",
+   "bullets": []
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+{
+ "model": "logit + offsets",
+ "k": 80,
+ "lam": 100.0,
+ "init": "cold",
+ "val_nll": 0.18051256455859552,
+ "val_brier": 0.05621732374479446,
+ "val_auc": 0.9640915034545361,
+ "test_nll": 0.1806376488121514,
+ "test_brier": 0.05624826496929101,
+ "test_auc": 0.9641540183566014,
+ "J": -55946142.7306495,
+ "iterations": 21,
+ "converged": true,
+ "monotone": true,
+ "seconds": 699.5250010490417
+}

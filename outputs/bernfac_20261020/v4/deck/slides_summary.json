@@ -1,0 +1,77 @@
+{
+ "out": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/v4/deck/NineRepresentations_v4_summary.pptx",
+ "start": 1,
+ "jpeg": {
+  "max_w": 1800,
+  "quality": 76
+ },
+ "slides": [
+  {
+   "kind": "title",
+   "title": "Nine ways to represent a single-cell matrix: the takeaways",
+   "bullets": [
+    "Fly premotor neurons, 24 h APF · 16,460 cells × 19,543 genes",
+    "Summary of the v4 deck (after a strict review) · ConnectionMiner · 25 Oct 2026"
+   ]
+  },
+  {
+   "title": "The question and the models",
+   "bullets": [
+    "Nine representations of one matrix, compared on held-out prediction, synthetic ground truth and cell maps under one protocol, with uncertainty."
+   ],
+   "image": "v4/biorender/v4_summary_overview.png"
+  },
+  {
+   "title": "1. NB counts predict held-out detection best, and the lead is real",
+   "bullets": [
+    "About 1 × 10⁻³ nats per entry ahead of every other model, with 95% intervals that exclude zero. The binary models are within 0.2 × 10⁻³ of each other."
+   ],
+   "image": "v4/figures/fig_test_ci.png"
+  },
+  {
+   "title": "2. The lead comes from bursty genes that Poisson cannot fit",
+   "bullets": [
+    "NB beats Poisson at every matched rank. The gain is on observed zeros of frequently detected wiring and TF genes, where overdispersion lets a high mean coexist with a zero."
+   ],
+   "image": "v4/figures/fig_nb_vs_poisson.png"
+  },
+  {
+   "title": "3. On synthetic data, each family wins the world built for it",
+   "bullets": [
+    "With grids that contain the true rank, validation picks the best setting almost everywhere. NB counts win the NB world; with genuine counts they also win the low-rank logit world."
+   ],
+   "image": "v4/figures/fig_syn_kl_v4.png"
+  },
+  {
+   "title": "4. All embeddings carry hemilineage; geometry is what differs",
+   "bullets": [
+    "A linear probe reads hemilineage at 0.97–0.99 from every model. Under whitening at 40 dimensions NB counts clusters best (ARI 0.74); processed counts lead at 20."
+   ],
+   "image": "v4/figures/fig_rep_fair.png"
+  },
+  {
+   "title": "5. Depth is partly biology, and it hides in different places",
+   "bullets": [
+    "A third of depth variance is hemilineage and birth time. Measured within those strata, scVI, Pearson residuals and NB counts keep the least depth; the binary models keep the most."
+   ],
+   "image": "v4/figures/fig_depth_axes_v4.png"
+  },
+  {
+   "title": "6. Depth-adjusted probabilities help, within limits",
+   "bullets": [
+    "Setting the cell offset to the median keeps marker structure and recovers the truth on synthetic data. On real data NB's p̃ still carries some depth and also removes birth-time variation."
+   ],
+   "image": "v4/figures/fig_std_rigor.png"
+  },
+  {
+   "title": "Scorecard",
+   "bullets": [],
+   "image": "v4/figures/fig_scorecard_v4.png"
+  },
+  {
+   "title": "Recommendation and open questions",
+   "bullets": [],
+   "image": "v4/equations/v4_recommendation.png"
+  }
+ ]
+}

@@ -1,0 +1,82 @@
+{
+ "selected": "pg_affine_d20_w64_lv1_r1",
+ "selection_rule": "lowest validation NLL among configurations (restart within a configuration chosen by lowest training objective F)",
+ "prediction_mode": "map_plugin",
+ "estimator": "joint MAP auto-decoder (no encoder; not a VAE)",
+ "val": {
+  "nll": 0.1776058143246367,
+  "auc": 0.9651735178279712,
+  "brier": 0.0554361392794775
+ },
+ "test": {
+  "nll": 0.17771600818659597,
+  "auc": 0.9652133535436743,
+  "brier": 0.05546547369072085
+ },
+ "final_F": 53470568.71186688,
+ "iterations": 94,
+ "termination": "time_limit",
+ "monotone": true,
+ "fit_seconds": 1505.0344560146332,
+ "config": {
+  "latent_dim": 20,
+  "hidden_widths": [
+   64,
+   64
+  ],
+  "activation": "tanh",
+  "head_mode": "affine",
+  "nonlinear_head_rho": 1.0,
+  "optimizer_mode": "pg_gem",
+  "dtype": "float32",
+  "device": "cpu",
+  "lambda_z": 1.0,
+  "lambda_hidden": 0.01,
+  "lambda_output": 1.0,
+  "lambda_bias": 0.01,
+  "max_outer": 200,
+  "tol": 2e-05,
+  "max_seconds": 1500.0,
+  "inner_steps": 10,
+  "inner_rounds": 1,
+  "head_steps": 2,
+  "resolve_head": true,
+  "step_init": 1.0,
+  "adaptive_step": true,
+  "step_max": 1000000.0,
+  "backtrack": 0.5,
+  "armijo": 0.25,
+  "max_trials": 12,
+  "grad_tol": 1e-30,
+  "monotone_rtol": 1e-07,
+  "seed": 2,
+  "n_restarts": 1,
+  "z_init_scale": 0.1,
+  "head_init_scale": 0.01,
+  "bias_init": "column_logit",
+  "bias_pseudocount": 0.5,
+  "chunk_rows": 2048,
+  "val_every": 1,
+  "verbose": false
+ },
+ "affine_rank_bound": 65,
+ "embedding": {
+  "file": "embedding.npy",
+  "shape": [
+   16460,
+   20
+  ],
+  "what": "fitted Z (n x d)"
+ },
+ "embedding_hidden": {
+  "file": "embedding_hidden.npy",
+  "shape": [
+   16460,
+   64
+  ],
+  "what": "h(Z), n x H"
+ },
+ "row_order": "rows of outputs/bernfac_20261020/full/data/Y.npy",
+ "precision": "float32 tensors, float64 accumulation; float64 reference only in tests/synthetic",
+ "scoring": "NLL/Brier on all val/test cells; AUC on a 2M subsample (rng seed 0); 10 equal-width bins"
+}

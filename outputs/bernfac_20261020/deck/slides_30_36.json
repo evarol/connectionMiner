@@ -1,0 +1,53 @@
+{
+ "out": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/deck/BernFac_fulldata_slides30-36.pptx",
+ "start": 30,
+ "slides": [
+  {
+   "title": "Full dataset: held-out CV over λ × k",
+   "image": "full/figures/fig_full_cv.png",
+   "bullets": [
+    "All 16,460 cells × 19,543 detected genes (322 M entries), 5% (16.1 M) held out. Best λ=10, k=40: NLL 0.1778, AUC 0.965 vs 0.1854 / 0.962 for cell + gene logistic. Refit on all entries: 188 PG-EM iterations, J monotone."
+   ]
+  },
+  {
+   "title": "Full dataset: every cell × every detected gene",
+   "image": "full/figures/fig_full_triptych.png",
+   "bullets": [
+    "At this scale most of the 19,543 genes are rarely detected, so area-averaged views are dominated by broadly expressed genes; P̂ tracks detection density across the whole matrix."
+   ]
+  },
+  {
+   "title": "Full dataset: all cells × 40 marker genes per hemilineage",
+   "image": "full/figures/fig_full_triptych_markers.png",
+   "bullets": [
+    "920 genes most enriched per hemilineage. The block diagonal appears in counts, binary Y and P̂; P̂ fills dropouts inside each block."
+   ]
+  },
+  {
+   "title": "Full dataset: zoom, every entry visible",
+   "image": "full/figures/fig_full_triptych_zoom.png",
+   "bullets": [
+    "10 cells per hemilineage × 3 marker genes per hemilineage (23 hemilineages). Sparse detections become consistent within-type probabilities."
+   ]
+  },
+  {
+   "title": "UMAPs: processed counts vs binary Y vs BernFac P̂",
+   "image": "full/umap/figures/umap_grid.png",
+   "bullets": [
+    "Rows: processed counts (R1), binary Y (R2), BernFac P̂ (R3); columns coloured by hemilineage, library, depth. R1 gives tight, separated hemilineage islands; R2 and R3 resolve hemilineages at the periphery but keep a depth gradient that mixes a central mass."
+   ]
+  },
+  {
+   "title": "Which representation reflects biology best?",
+   "image": "full/figures/fig_full_rep_comparison.png",
+   "bullets": [
+    "Processed counts (R1) win on every hemilineage metric (kNN 0.98, Leiden ARI 0.65, purity 0.97) and mix libraries best. BernFac P̂ retains a depth axis (|ρ| 0.98, no cell offset); removing it lifts R3 ARI 0.49 → 0.61, still below R1."
+   ]
+  },
+  {
+   "title": "Conclusions and next steps",
+   "image": "equations/eq_conclusions.png",
+   "bullets": []
+  }
+ ]
+}

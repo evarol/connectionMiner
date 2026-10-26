@@ -1,0 +1,58 @@
+{
+ "out": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/deck/BernFac_offsets_slides30-37.pptx",
+ "start": 30,
+ "slides": [
+  {
+   "title": "Full dataset: held-out CV over λ × k",
+   "image": "full/figures/fig_full_cv.png",
+   "bullets": [
+    "5% (16.1 M) entries held out. Solid: Ψ = UVᵀ; dashed: Ψ = a1ᵀ + 1bᵀ + UVᵀ. Best: k=40, λ=10 with offsets, NLL 0.1777 / AUC 0.965 (no offsets 0.1778; cell + gene logistic 0.1854 / 0.962). Every fit monotone in J."
+   ]
+  },
+  {
+   "title": "Full dataset: every cell × every detected gene",
+   "image": "full/figures/fig_full_triptych.png",
+   "bullets": [
+    "At this scale most of the 19,543 genes are rarely detected, so area-averaged views are dominated by broadly expressed genes; P̂ tracks detection density across the whole matrix."
+   ]
+  },
+  {
+   "title": "Full dataset: all cells × 40 marker genes per hemilineage",
+   "image": "full/figures/fig_full_triptych_markers.png",
+   "bullets": [
+    "920 genes most enriched per hemilineage. The block diagonal appears in counts, binary Y and P̂; P̂ fills dropouts inside each block."
+   ]
+  },
+  {
+   "title": "Full dataset: zoom, every entry visible",
+   "image": "full/figures/fig_full_triptych_zoom.png",
+   "bullets": [
+    "10 cells per hemilineage × 3 marker genes per hemilineage (23 hemilineages). Sparse detections become consistent within-type probabilities."
+   ]
+  },
+  {
+   "title": "Adding cell and gene offsets",
+   "image": "equations/eq_offsets.png",
+   "bullets": []
+  },
+  {
+   "title": "UMAPs: processed counts vs binary Y vs BernFac (± offsets)",
+   "image": "full/figures/fig_full_umap_slide.png",
+   "bullets": [
+    "Top: hemilineage; bottom: sequencing depth. Processed counts give tight, separated islands. Offsets (R4) split many hemilineages that R3 merges, but a high-depth mass still mixes types in R2–R4."
+   ]
+  },
+  {
+   "title": "Which representation reflects biology best?",
+   "image": "full/figures/fig_full_rep_comparison.png",
+   "bullets": [
+    "Processed counts (R1) still reflect biology best (kNN 0.98, purity 0.97, ARI 0.65). Offsets improve BernFac (R4 vs R3: kNN 0.92 vs 0.87, ARI 0.54 vs 0.49); with residual depth regressed out R4 matches R1 on ARI (0.648 vs 0.649) but not on kNN/purity."
+   ]
+  },
+  {
+   "title": "Conclusions and next steps",
+   "image": "equations/eq_conclusions.png",
+   "bullets": []
+  }
+ ]
+}

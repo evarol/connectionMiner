@@ -1,0 +1,15 @@
+{
+ "k": 20,
+ "lam": 3,
+ "nll": 0.1786566121210186,
+ "brier": 0.05581493700861586,
+ "auc": 0.9648772142246871,
+ "n_heldout": 16090695,
+ "train_ll_per_entry": -0.1765013244951824,
+ "J": -54372719.78079377,
+ "iterations": 121,
+ "converged": true,
+ "monotone": true,
+ "seconds": 1282.3226788043976,
+ "warm_start": true
+}
