@@ -1,0 +1,81 @@
+{
+  "n_cells": 16460,
+  "n_genes_kept": 19543,
+  "reps": {
+    "R1": {
+      "hvg_flavor": "seurat_v3 (raw counts)",
+      "var_ratio_sum": 0.24022708233056497,
+      "seconds": 15.1
+    },
+    "R2": {
+      "centred_frob_sq": 20024394.13913825,
+      "var_ratio_sum": 0.12644393131743892,
+      "seconds": 33.4
+    },
+    "R3": {
+      "k": 40,
+      "n": 16460,
+      "m": 19543,
+      "singular_values_top5": [
+        89024.768,
+        9828.633,
+        2848.999,
+        2567.32,
+        2004.401
+      ],
+      "fit_path": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/full/fits/best_full.npz",
+      "fit_mtime": "Wed Oct 21 02:32:35 2026",
+      "seconds": 0.0
+    },
+    "R4": {
+      "k": 40,
+      "n": 16460,
+      "m": 19543,
+      "singular_values_top5": [
+        5462.027,
+        2792.834,
+        2539.69,
+        2132.497,
+        1852.157
+      ],
+      "fit_path": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/full/fits/best_full_offsets.npz",
+      "fit_mtime": "Wed Oct 21 13:22:23 2026",
+      "seconds": 0.0
+    },
+    "R5": {
+      "k": 40,
+      "n": 16460,
+      "m": 19543,
+      "singular_values_top5": [
+        2327.188,
+        1592.792,
+        1230.224,
+        1132.735,
+        990.274
+      ],
+      "fit_path": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/full/fits/best_full_cloglog.npz",
+      "fit_mtime": "Wed Oct 21 16:57:07 2026",
+      "seconds": 0.0
+    },
+    "R6": {
+      "source": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/models/counts/embedding_nb.npy",
+      "dim": 120,
+      "seconds": 0.0
+    },
+    "R7": {
+      "source": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/models/mfa/embedding.npy",
+      "dim": 40,
+      "seconds": 0.0
+    },
+    "R8": {
+      "source": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/models/neural/embedding.npy",
+      "dim": 20,
+      "seconds": 0.0
+    },
+    "R9": {
+      "source": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/models/lbm/embedding.npy",
+      "dim": 200,
+      "seconds": 0.0
+    }
+  }
+}

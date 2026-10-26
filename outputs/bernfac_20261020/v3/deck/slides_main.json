@@ -1,0 +1,451 @@
+{
+ "out": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/v3/deck/NineRepresentations_v3_main.pptx",
+ "start": 1,
+ "jpeg": {
+  "max_w": 1800,
+  "quality": 76
+ },
+ "slides": [
+  {
+   "kind": "title",
+   "title": "Nine ways to represent a single-cell matrix",
+   "bullets": [
+    "Detection probabilities, count models and cell embeddings, compared on one dataset with one set of metrics",
+    "Fly premotor neurons, 24 h APF: 16,460 cells × 19,543 genes",
+    "ConnectionMiner · 23 Oct 2026"
+   ]
+  },
+  {
+   "title": "The question",
+   "bullets": [
+    "We want one representation of the cells × genes matrix to build on.",
+    "Two jobs: (1) predict which genes a cell detects, entry by entry, and (2) place cells so that hemilineage and birth time are near, while library and sequencing depth are not.",
+    "We fit nine representations under the same split, the same metrics and the same plots. Seven of them output a probability for every entry; two (processed counts, binary PCA) are the reference pipelines.",
+    "Sequencing depth is the main nuisance. The models differ in where they put it: in an explicit cell offset (R4–R6), inside their latent factors (R3, R7–R9), or normalised away beforehand (R1). An explicit offset lets us report two probabilities per entry: the observed one, at the cell's own depth, and a depth-standardized one, at a common depth.",
+    "Order: methods, depth handling, tuning and metrics → synthetic data with known truth → held-out prediction → cell maps → cells × genes, observed and depth-standardized → diagnostics → recommendation."
+   ]
+  },
+  {
+   "kind": "section",
+   "part": "Part 1",
+   "title": "Methods and metrics",
+   "bullets": [
+    "Every method on one page, the math for each family, where each puts sequencing depth, how it is fitted, how it is tuned and how it is scored."
+   ]
+  },
+  {
+   "title": "Nine representations at a glance",
+   "bullets": [
+    "Colour code used for the rest of the deck: blue = reference pipelines, orange = low-rank detection models, teal = counts, purple = structured detection models."
+   ],
+   "image": "v3/biorender/v3_methods_map.png"
+  },
+  {
+   "title": "Shared notation",
+   "bullets": [],
+   "image": "v3/equations/v3_notation.png"
+  },
+  {
+   "title": "Every model in one table",
+   "bullets": [],
+   "image": "v3/equations/v3_models.png"
+  },
+  {
+   "title": "R3–R5: low-rank detection models (BernFac)",
+   "bullets": [
+    "Each entry is a coin flip with its own probability. The log-odds are a sum of a cell factor times a gene factor; R4 adds a cell and a gene offset, R5 swaps the logistic link for the complementary log-log."
+   ],
+   "image": "biorender/bernfac_1_model_schematic.png"
+  },
+  {
+   "title": "BernFac objective",
+   "bullets": [],
+   "image": "equations/eq_model.png"
+  },
+  {
+   "title": "R4: cell and gene offsets",
+   "bullets": [
+    "The cell offset a_i absorbs sequencing depth and the gene offset b_j absorbs abundance, so UVᵀ is free to describe cell state. Because a_i is explicit, it can later be set to one common value for every cell."
+   ],
+   "image": "equations/eq_offsets.png"
+  },
+  {
+   "title": "R5: the complementary log-log link",
+   "bullets": [
+    "Under cloglog, 1 − p = exp(−rate), so depth enters as a multiplicative rate, the way it does when molecules are sampled at random."
+   ],
+   "image": "equations/eq_cloglog.png"
+  },
+  {
+   "title": "R6: factorize the counts themselves",
+   "bullets": [
+    "Negative-binomial (and Poisson) factorization of raw UMI counts with each cell's library size as an offset. Detection probability is Pr(count ≥ 1), so it is scored on the same entries as the binary models."
+   ],
+   "image": "biorender/bernfac_5_count_models.png"
+  },
+  {
+   "title": "Count factorization",
+   "bullets": [],
+   "image": "equations/eq_counts.png"
+  },
+  {
+   "title": "R7: mixture of local factor models",
+   "bullets": [
+    "Each cell's logits lie near one of K local affine subspaces. With K = 1 this is a probabilistic version of BernFac with a Gaussian prior on cell coordinates."
+   ],
+   "image": "biorender/bernfac_6_mixture_local_factors.png"
+  },
+  {
+   "title": "Mixture of local factors",
+   "bullets": [],
+   "image": "equations/eq_mfa.png"
+  },
+  {
+   "title": "R8: a nonlinear manifold with a neural decoder",
+   "bullets": [
+    "Each cell gets a coordinate z; a shared network maps z to one logit per gene. There is no encoder: z and the network are fitted together."
+   ],
+   "image": "biorender/bernfac_7_neural_manifold.png"
+  },
+  {
+   "title": "Neural manifold",
+   "bullets": [],
+   "image": "equations/eq_neural.png"
+  },
+  {
+   "title": "R9: latent block model",
+   "bullets": [
+    "Cells and genes are clustered at the same time; each block of cell group × gene group has one detection probability."
+   ],
+   "image": "biorender/bernfac_8_latent_block_model.png"
+  },
+  {
+   "title": "Latent block model",
+   "bullets": [],
+   "image": "equations/eq_lbm.png"
+  },
+  {
+   "title": "Where sequencing depth goes in each model",
+   "bullets": [
+    "R4–R6 give depth its own term, a cell offset. R3, R7, R8 and R9 have no such term, so depth ends up in their latent factors. R1 divides it out before PCA."
+   ],
+   "image": "v3/biorender/v3_depth_schematic.png"
+  },
+  {
+   "title": "Observed and depth-standardized probabilities",
+   "bullets": [],
+   "image": "v3/equations/v3_depth.png"
+  },
+  {
+   "title": "Fitting: one Pólya–Gamma step reused in four models",
+   "bullets": [
+    "The Pólya–Gamma identity turns the logistic likelihood into a Gaussian one given auxiliary weights, so each update is a weighted least-squares solve."
+   ],
+   "image": "biorender/bernfac_2_pgem_inference.png"
+  },
+  {
+   "title": "Inference for every model",
+   "bullets": [],
+   "image": "v3/equations/v3_inference.png"
+  },
+  {
+   "title": "How every model is scored",
+   "bullets": [
+    "Three tiers, the same for all nine: held-out entries on real data, synthetic data where the true probabilities are known, and checks on the cell representation."
+   ],
+   "image": "v3/biorender/v3_evaluation_design.png"
+  },
+  {
+   "title": "Prediction metrics",
+   "bullets": [],
+   "image": "v3/equations/v3_metrics_pred.png"
+  },
+  {
+   "title": "Representation metrics",
+   "bullets": [],
+   "image": "v3/equations/v3_metrics_rep.png"
+  },
+  {
+   "title": "What is tuned, on which grid, and what was chosen",
+   "bullets": [
+    "Every hyperparameter is chosen on validation entries, on real and synthetic data alike. The selection curves follow in Parts 2 and 3."
+   ],
+   "image": "v3/equations/v3_hyperparams.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 2",
+   "title": "Synthetic data: which model recovers the truth?",
+   "bullets": [
+    "Five simulated worlds, each built to favour a different model. All methods fitted and selected exactly as on real data."
+   ]
+  },
+  {
+   "title": "Five synthetic worlds with known probabilities",
+   "bullets": [
+    "2,000 cells × 300 genes, mean detection 0.18, three seeds each. Each world is built in the image of one model family: low-rank logit (R3–R5), NB counts (R6), cell types with depth, a 2-D nonlinear manifold (R8) and blocks (R9). The same 70/15/15 entry split and validation selection is used for every method."
+   ],
+   "image": "v3/figures/fig_syn_design.png"
+  },
+  {
+   "title": "How each method was tuned on the synthetic data",
+   "bullets": [
+    "Each cell is validation NLL relative to the best setting in that world; boxes mark what was chosen. The three seeds agree in 34 of 40 cases. Low-rank and count models mostly pick k = 10, λ = 10. Orange boxes are picks at the edge of the tested range, mostly the most blocks for latent blocks and the strongest penalty for the neural manifold, so those two may be held back by their grids."
+   ],
+   "image": "v3/figures/fig_syn_select.png"
+  },
+  {
+   "title": "Distance to the true probabilities",
+   "bullets": [
+    "The local-factor mixture (R7) gets closest to the truth in G1–G3, including the NB world (KL 0.022 vs 0.026 for NB counts). The neural manifold wins its own world (G4), latent blocks win theirs (G5). Poisson is close to the cell + gene baseline whenever counts are overdispersed (G2, G3)."
+   ],
+   "image": "v3/figures/fig_syn_kl.png"
+  },
+  {
+   "title": "Calibration against the truth",
+   "bullets": [
+    "Left: p̂ against observed detection; right: against the true probability. The logit models sit on the diagonal. NB counts and cloglog are over-confident at the top (p̂ 0.97 where the truth is about 0.85); Poisson over-predicts everywhere above 0.3."
+   ],
+   "image": "v3/figures/fig_syn_calibration.png"
+  },
+  {
+   "title": "Do the embeddings recover the true cell groups?",
+   "bullets": [
+    "G3 cell types: NB counts has the best kNN accuracy (0.95) and processed counts the best clustering (Leiden ARI 0.97); BernFac logit reaches only 0.63. G4: no method recovers regions of the 2-D latent well (ARI at most 0.45), the neural manifold included. G5: latent blocks recover their own blocks almost exactly."
+   ],
+   "image": "v3/figures/fig_syn_embed.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 3",
+   "title": "Real data: held-out prediction",
+   "bullets": [
+    "Hyperparameters chosen on 8.05 M validation entries; the 8.04 M test entries were scored once."
+   ]
+  },
+  {
+   "title": "Model selection for every family",
+   "bullets": [
+    "Validation NLL over each family's grid (grids and choices are listed in the tuning table, Part 1). Low-rank models settle at rank 40, NB counts at rank 120, the mixture at one component with d = 40. The latent block model and Poisson are still improving at the edge of their grids."
+   ],
+   "image": "v3/figures/fig_select_all.png"
+  },
+  {
+   "title": "All models on the same test entries",
+   "bullets": [
+    "NB counts predict best (test NLL 0.1766). Five binary models sit within 0.0003 of each other at 0.1775–0.1778. Latent blocks (0.1830) and Poisson (0.1839) trail; a gene-rate-only baseline scores 0.1976."
+   ],
+   "image": "v3/figures/fig_test_all.png"
+  },
+  {
+   "title": "Calibration on test entries",
+   "bullets": [
+    "All seven models are calibrated to within 0.7 percentage points in every bin; Poisson over-predicts mid-range probabilities by up to 2.3 points. R5 and R6 also produce confident predictions (p̂ below 0.01 or above 0.99) that the logit models rarely give."
+   ],
+   "image": "v3/figures/fig_calibration_all.png"
+  },
+  {
+   "title": "Where the errors are",
+   "bullets": [
+    "NB counts are best in every depth decile and every gene-frequency decile. The gaps open on frequently detected genes, where the latent block model loses most. Poisson fails in the deepest 10% of cells."
+   ],
+   "image": "v3/figures/fig_test_by_depth.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 4",
+   "title": "Cell maps: what drives the clustering?",
+   "bullets": [
+    "The same UMAP settings for all nine embeddings, coloured by biology (hemilineage, birth time, sex) and by nuisance (depth, library). Metrics are computed in the embedding, not in 2-D."
+   ]
+  },
+  {
+   "title": "Coloured by hemilineage",
+   "bullets": [
+    "Processed counts (R1), NB counts (R6) and the neural manifold (R8) give clean strands per hemilineage. R2, R3, R4 and R7 keep a mixed central mass; R9 breaks cells into about 200 mixed fragments."
+   ],
+   "image": "v3/figures/fig_umap_grid_hemilineage.png"
+  },
+  {
+   "title": "Coloured by sequencing depth",
+   "bullets": [
+    "In binary PCA, BernFac logit and the mixture, the main gradient across the map is depth: a low-UMI blob and a high-UMI blob. R4–R6 embed UVᵀ without their cell offset, which shrinks the blob, but R4 still keeps a depth axis (|ρ| 0.80), so some depth leaks into its factors. NB counts and R1 spread depth along the strands."
+   ],
+   "image": "v3/figures/fig_umap_grid_depth.png"
+  },
+  {
+   "title": "Coloured by library",
+   "bullets": [
+    "No method clusters by library. Library is still predictable above chance (0.05) from the neighbours: 0.10–0.14 for R9, R1 and R8, 0.21–0.27 for the detection models."
+   ],
+   "image": "v3/figures/fig_umap_grid_library.png"
+  },
+  {
+   "title": "Coloured by sex",
+   "bullets": [
+    "Female and male cells separate within each strand in every method (kNN accuracy about 0.82). We have not checked whether this comes from sex-specific genes or from single-sex libraries."
+   ],
+   "image": "v3/figures/fig_umap_grid_sex.png"
+  },
+  {
+   "title": "Coloured by birth time",
+   "bullets": [
+    "Birth time (primary, secondary, precursor) is still predictable within a hemilineage: 0.78 for R1 and R6 against about 0.35 by chance. It is the second biological axis after hemilineage."
+   ],
+   "image": "v3/figures/fig_umap_grid_birthtime.png"
+  },
+  {
+   "title": "Zoom: hemilineage pairs that depend on the method",
+   "bullets": [
+    "05B/06B and 13A/19A: 15-NN confusion is under 1% in R1 and R6 and 4–7% in R2, R3 and R7. The confused cells are the ones that fall into the shared high-depth mass."
+   ],
+   "image": "v3/figures/fig_umap_zoom_hemilineage_pairs.png"
+  },
+  {
+   "title": "Zoom: the deepest and shallowest 10% of cells",
+   "bullets": [
+    "The top-depth decile is 84% primary neurons (17% overall), so part of the 'depth' blob is biology. Still, most hemilineage errors sit at the two depth extremes: 28% and 26% for R3, against 3–4% in the middle deciles."
+   ],
+   "image": "v3/figures/fig_umap_zoom_depth_extremes.png"
+  },
+  {
+   "title": "Zoom: hemilineage 14A split by birth time",
+   "bullets": [
+    "Primary (335) and secondary (1,072) 14A neurons form separate clusters in every method; within 14A, birth time is decoded at 0.91–0.96 for R1–R8. In the binary models the primary cells sit inside the shared high-depth mass."
+   ],
+   "image": "v3/figures/fig_umap_zoom_14A_birthtime.png"
+  },
+  {
+   "title": "What each embedding encodes",
+   "bullets": [
+    "Blue: kNN accuracy for biological and technical labels. Red: how strongly depth lines up with the top components. Depth dominates R2, R3 and R7 (|ρ| 0.97–1.00); R6 is cleanest (0.24 on its first component). R8 keeps depth off its first axis but not out of the top five."
+   ],
+   "image": "v3/figures/fig_umap_drivers.png"
+  },
+  {
+   "title": "Representation metrics for all nine",
+   "bullets": [
+    "R1 wins kNN accuracy and purity; R6 wins Leiden ARI (0.67 vs 0.65) and has the weakest depth axis. The low-rank detection models trail by 0.04–0.10 on hemilineage metrics."
+   ],
+   "image": "v3/figures/fig_metrics_all.png"
+  },
+  {
+   "title": "Regressing depth out of each embedding",
+   "bullets": [
+    "Removing log depth helps the binary models most: BernFac logit's Leiden ARI goes from 0.49 to 0.61. R1 and R6 barely move because depth was never their main axis. R6 still has the highest Leiden ARI after the correction (0.69)."
+   ],
+   "image": "v3/figures/fig_depth_regressed.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 5",
+   "title": "Cells × genes, observed and depth-standardized",
+   "bullets": [
+    "Same cells and genes in every panel: five hemilineages, low- and high-depth cells, marker, depth-sensitive, rare and ubiquitous genes. First what each model predicts at each cell's own depth, then what R4–R6 predict once every cell is set to a common depth."
+   ]
+  },
+  {
+   "title": "Overview: one slice through every model",
+   "bullets": [
+    "All seven models reproduce the hemilineage marker blocks of the data and fill dropouts within them. R9 blurs them, because one probability is shared by a whole block of cells and genes."
+   ],
+   "image": "v3/figures/fig_heat_overview.png"
+  },
+  {
+   "title": "Marker genes, including the confusable 05B/06B",
+   "bullets": [
+    "NB counts (R6) gives the sharpest marker blocks; for example toy is called in 05B and absent in 06B. The low-rank binary models smear 05B and 06B markers into each other, matching the kNN confusion on the cell maps."
+   ],
+   "image": "v3/figures/fig_heat_markers.png"
+  },
+  {
+   "title": "Depth-sensitive genes",
+   "bullets": [
+    "For the eight genes whose detection rises most with depth, every model reproduces the jump from low- to high-depth cells (right). R9 overestimates the shallow cells. R6 shows the expected count μ̂ behind its probabilities."
+   ],
+   "image": "v3/figures/fig_heat_depth.png"
+  },
+  {
+   "title": "Differences from the empirical rate",
+   "bullets": [
+    "Each panel is p̂ minus the training detection rate in the same hemilineage × depth stratum. R6 is closest (mean |diff| 0.073) while keeping the most cell-to-cell spread. R9 is off by whole blocks, for example 05B and 06B markers."
+   ],
+   "image": "v3/figures/fig_heat_diff.png"
+  },
+  {
+   "title": "Depth-standardized probabilities next to every model",
+   "bullets": [
+    "Same cells and genes as the overview, with R4–R6 shown twice: observed (each cell at its own depth) and standardized (every cell at the median depth). After standardizing, low- and high-depth cells of one hemilineage look alike on the depth-sensitive genes, and every hemilineage keeps its markers. R3 and R7–R9 have no depth term to standardize."
+   ],
+   "image": "v3/figures/fig_heat_std_overview.png"
+  },
+  {
+   "title": "Depth-sensitive genes, observed and standardized",
+   "bullets": [
+    "On the eight genes whose detection rises most with depth, every observed p̂ reproduces the data's jump from shallow to deep cells (gap about 0.43). Standardizing cuts the gap to 0.26 for R4 and 0.17–0.18 for R5 and R6. Some of the remaining gap may be real biology: these genes include mitochondrial ribosomal genes, and the deepest cells are mostly primary neurons."
+   ],
+   "image": "v3/figures/fig_heat_std_depth.png"
+  },
+  {
+   "title": "What standardization changes",
+   "bullets": [
+    "p̃ − p̂: standardizing moves whole cells, raising shallow cells and lowering deep ones (top strip: each cell's offset from the median). Genes that are off stay off, so the hemilineage pattern is unchanged. The mean absolute shift is 0.06–0.07."
+   ],
+   "image": "v3/figures/fig_heat_std_diff.png"
+  },
+  {
+   "title": "Depth dependence and biology across the whole matrix",
+   "bullets": [
+    "All 16,460 cells × 3,000 random genes. (A) The median correlation of p with depth falls from about 0.8 to 0.29 (R4), 0.19 (R5) and 0.11 (R6); models without a depth term stay at 0.5–0.8. (B) R4 keeps depth in frequently detected genes, where depth leaked into its factors. (C) Markers keep 84–90% of their variance between hemilineages."
+   ],
+   "image": "v3/figures/fig_std_quant.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 6",
+   "title": "Diagnostics",
+   "bullets": [
+    "Convergence, run time and tests for every method."
+   ]
+  },
+  {
+   "title": "Convergence",
+   "bullets": [
+    "Every objective went one way only. The neural manifold never converged: all of its runs stopped at the 1,500 s budget, so its numbers are a lower bound on what it can do."
+   ],
+   "image": "v3/figures/fig_converge_all.png"
+  },
+  {
+   "title": "Run time",
+   "bullets": [
+    "Selected fits take 4 min (mixture, K = 1) to 34 min (NB, k = 120); full grids took 1.7–8 h each on this machine."
+   ],
+   "image": "v3/figures/fig_runtime.png"
+  },
+  {
+   "title": "Tests",
+   "bullets": [
+    "All suites pass: BernFac 11/11, counts 5/5, mixture 21/21, neural 14/14, latent blocks 12/12. The offsets and cloglog paths (R4, R5) have no unit tests of their own; they are only guarded by the run-time monotonicity check."
+   ],
+   "image": "v3/figures/fig_tests.png"
+  },
+  {
+   "kind": "section",
+   "part": "Part 7",
+   "title": "Which one to work with?",
+   "bullets": []
+  },
+  {
+   "title": "Scorecard",
+   "bullets": [
+    "Darker is better within each column; black boxes mark the best value."
+   ],
+   "image": "v3/figures/fig_scorecard.png"
+  },
+  {
+   "title": "Recommendation",
+   "bullets": [],
+   "image": "v3/equations/v3_recommendation.png"
+  }
+ ]
+}

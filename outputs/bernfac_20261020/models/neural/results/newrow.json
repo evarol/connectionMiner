@@ -1,0 +1,32 @@
+{
+ "selected": "pg_affine_d20_w64_lv1_r1",
+ "n_test_rows": 1646,
+ "context_fraction": 0.499997854996388,
+ "fit_seconds": 1503.6673769950867,
+ "inference_seconds": 264.75676703453064,
+ "fit_iterations": 95,
+ "fit_termination": "time_limit",
+ "inference": {
+  "method": "pg_gem",
+  "n_starts": 2,
+  "rows_without_context": 0
+ },
+ "neural_inferred_z": {
+  "nll": 0.17813738696011663,
+  "brier": 0.0556090835833441,
+  "auc": 0.9652341959826494,
+  "n": 16083958
+ },
+ "neural_z0_mode_plugin": {
+  "nll": 0.2019835316463231,
+  "brier": 0.06319002786578941,
+  "auc": 0.9566628057855148,
+  "n": 16083958
+ },
+ "gene_rate_training_rows": {
+  "nll": 0.19801152289630275,
+  "brier": 0.062427389995765616,
+  "auc": 0.957240255550795,
+  "n": 16083958
+ }
+}

@@ -1,0 +1,282 @@
+{
+ "out": "/Users/erdem/Documents/github/connectionMiner/outputs/bernfac_20261020/v4/deck/NineRepresentations_v4_appendix.pptx",
+ "start": 45,
+ "jpeg": {
+  "max_w": 1800,
+  "quality": 76
+ },
+ "slides": [
+  {
+   "kind": "section",
+   "part": "Appendix",
+   "title": "Derivations, diagnostics and earlier results",
+   "bullets": [
+    "A: model equations. B: diagnostics. C: v3 views kept for reference. D: 1000 × 100 pilot. E: BernFac synthetic model-selection study."
+   ]
+  },
+  {
+   "title": "A · Shared notation",
+   "bullets": [],
+   "image": "v3/equations/v3_notation.png"
+  },
+  {
+   "title": "A · BernFac objective",
+   "bullets": [],
+   "image": "equations/eq_model.png"
+  },
+  {
+   "title": "A · Offsets (R4)",
+   "bullets": [],
+   "image": "equations/eq_offsets.png"
+  },
+  {
+   "title": "A · Complementary log-log (R5)",
+   "bullets": [],
+   "image": "equations/eq_cloglog.png"
+  },
+  {
+   "title": "A · Count factorization (R6, Poisson)",
+   "bullets": [],
+   "image": "equations/eq_counts.png"
+  },
+  {
+   "title": "A · Mixture of local factors (R7)",
+   "bullets": [],
+   "image": "equations/eq_mfa.png"
+  },
+  {
+   "title": "A · Neural manifold (R8)",
+   "bullets": [],
+   "image": "equations/eq_neural.png"
+  },
+  {
+   "title": "A · Latent block model (R9)",
+   "bullets": [],
+   "image": "equations/eq_lbm.png"
+  },
+  {
+   "title": "A · Pólya–Gamma EM",
+   "bullets": [],
+   "image": "biorender/bernfac_2_pgem_inference.png"
+  },
+  {
+   "title": "B · Convergence (v3 fits)",
+   "bullets": [
+    "Every objective went one way only. The v3 neural fits stopped at a 1,500 s limit; the v4 refits use a 250-iteration budget."
+   ],
+   "image": "v3/figures/fig_converge_all.png"
+  },
+  {
+   "title": "B · Run time (v3 fits)",
+   "bullets": [
+    "Warm-started and cold-started fits are mixed, so times are indicative only."
+   ],
+   "image": "v3/figures/fig_runtime.png"
+  },
+  {
+   "title": "B · Tests",
+   "bullets": [
+    "All suites pass. The offsets and cloglog fits (R4, R5) have no unit tests of their own."
+   ],
+   "image": "v3/figures/fig_tests.png"
+  },
+  {
+   "title": "B · Synthetic tuning, v3 grids",
+   "bullets": [
+    "Superseded by the v4 grids, which contain the true rank. Kept to show why the v3 synthetic conclusions changed."
+   ],
+   "image": "v3/figures/fig_syn_select.png"
+  },
+  {
+   "title": "C · Marker genes",
+   "bullets": [],
+   "image": "v3/figures/fig_heat_markers.png"
+  },
+  {
+   "title": "C · Depth-sensitive genes (in-sample selection)",
+   "bullets": [],
+   "image": "v3/figures/fig_heat_depth.png"
+  },
+  {
+   "title": "C · Difference from the empirical rate",
+   "bullets": [],
+   "image": "v3/figures/fig_heat_diff.png"
+  },
+  {
+   "title": "C · What depth adjustment changes",
+   "bullets": [],
+   "image": "v3/figures/fig_heat_std_diff.png"
+  },
+  {
+   "title": "C · UMAP coloured by birth time",
+   "bullets": [],
+   "image": "v3/figures/fig_umap_grid_birthtime.png"
+  },
+  {
+   "title": "C · UMAP coloured by library",
+   "bullets": [],
+   "image": "v3/figures/fig_umap_grid_library.png"
+  },
+  {
+   "title": "C · Zoom: hemilineage pairs",
+   "bullets": [
+    "v3 view on unwhitened coordinates; the v4 fair-protocol slide supersedes the error rates quoted in v3."
+   ],
+   "image": "v3/figures/fig_umap_zoom_hemilineage_pairs.png"
+  },
+  {
+   "title": "D · Real-data design and evaluations",
+   "image": "biorender/bernfac_3_realdata_design.png",
+   "bullets": [
+    "1000 cells = 4 libraries (2F, 2M) × 5 hemilineages × 50; 100 HVGs; raw UMI counts from premn_24h; 36 (λ, k) fits."
+   ]
+  },
+  {
+   "title": "D · Data: counts and binarized matrices",
+   "image": "real/figures/fig1_data_overview.png",
+   "layout": "side",
+   "bullets": [
+    "Cells sorted hemilineage → library → depth; genes clustered.",
+    "Y≥1 density 0.487; Y≥2 density 0.373.",
+    "Hemilineage blocks are obvious by eye; library stripes are not."
+   ]
+  },
+  {
+   "title": "D · Fitted probabilities across prior strength × rank",
+   "image": "real/figures/fig2_P_gallery.png",
+   "layout": "side",
+   "bullets": [
+    "k=1: one gene-propensity axis.",
+    "Small λ + large k: P → 0/1, copies Y (overfit; held-out NLL 2.8).",
+    "λ=10, k=20: smooth, block-structured probabilities; best held-out NLL 0.479."
+   ]
+  },
+  {
+   "title": "D · Log counts, binary Y and inferred Bernoulli probabilities",
+   "image": "real/figures/fig10_side_by_side.png",
+   "bullets": [
+    "Same cell order (hemilineage → library → depth) and gene order in every panel. P̂ turns each 0/1 into a probability: hemilineage blocks become sharp, and detection noise within a block is smoothed."
+   ]
+  },
+  {
+   "title": "D · Zoom: 60 cells × 40 genes, entry by entry",
+   "image": "real/figures/fig11_side_by_side_zoom.png",
+   "bullets": [
+    "12 cells per hemilineage from one library. High counts map to high P̂; isolated 1s in low-probability genes (and 0s in high-probability ones) are read as sampling noise. The compact fit (λ=1, k=5) is smoother; the CV-best fit (λ=10, k=20) keeps more cell-level detail."
+   ]
+  },
+  {
+   "title": "D · Grid overview",
+   "image": "real/figures/fig3_grid_overview.png",
+   "bullets": [
+    "Train likelihood rises with k and falls with λ; held-out metrics peak at strong shrinkage with generous rank."
+   ]
+  },
+  {
+   "title": "D · Held-out entry CV: λ is the real complexity knob",
+   "image": "real/figures/fig4_heldout_cv.png",
+   "bullets": [
+    "Best: λ=10, k=20 (NLL 0.479, AUC 0.858) vs additive cell+gene logistic 0.544 / 0.800. λ≥30 collapses; λ=100 → U=V=0. Weak priors are over-confident (d)."
+   ]
+  },
+  {
+   "title": "D · Information content: P ranks expression level from binary data",
+   "image": "real/figures/fig5_information_content.png",
+   "bullets": [
+    "Within detected entries, median gene-wise ρ(P, counts) = 0.30 (0.28 after removing depth) vs 0.03 for a depth × abundance reference; P saturates above ~3 UMI."
+   ]
+  },
+  {
+   "title": "D · Biology vs batch on real data",
+   "image": "real/figures/fig6_batch_vs_biology.png",
+   "bullets": [
+    "Hemilineage decoded at 0.97–0.99 (k≥5); silhouette 0.29 (λ=1, k=5) vs 0.06 raw Y. Library/sex ≈ chance even in raw counts → this subset cannot test batch removal. No row offset → a depth factor appears at k≥5 (ρ≈0.56)."
+   ]
+  },
+  {
+   "title": "D · Convergence",
+   "image": "real/figures/fig7_convergence.png",
+   "bullets": [
+    "J monotone in all fits. λ≥3 converges in 10–190 iterations; 12/45 fits (all λ≤1) hit the 500-iteration cap. Restart spread ≤1e-5 at λ≥3, 1e-4–1e-2 at weak priors (distinct optima)."
+   ]
+  },
+  {
+   "title": "D · Identifiability: unique up to rotation when well regularized",
+   "image": "real/figures/fig8_identifiability.png",
+   "bullets": [
+    "λ=1, k=5: raw U differs across seeds, but after Procrustes ≤1.6e-5 and P agrees to 3e-5. λ=0.3, k=10: different optima (|ΔP| up to 0.98). Orthogonal R leaves J unchanged; invertible A lowers J → prior removes all but O(k)."
+   ]
+  },
+  {
+   "title": "D · Binarization sensitivity: count ≥ 1 vs ≥ 2",
+   "image": "real/figures/fig9_binarization_sensitivity.png",
+   "bullets": [
+    "Same picture; ≥2 decodes hemilineage at lower rank and P carries more level information (gene-wise ρ 0.49). Best ≥2 model λ=3, k=10 (NLL 0.433)."
+   ]
+  },
+  {
+   "title": "E · Synthetic ground truth: can data-only criteria find the true P?",
+   "image": "biorender/bernfac_4_synthetic_cv_design.png",
+   "bullets": [
+    "S1 low-rank logistic (k*=3, 8) · S2 Poisson counts with clusters (misspecified) · S3 S2 + library batch (target P_bio). 3 seeds × 42 (λ, k)."
+   ]
+  },
+  {
+   "title": "E · Evaluation criteria and the oracle",
+   "image": "equations/eq_eval.png",
+   "bullets": []
+  },
+  {
+   "title": "E · Criterion landscapes vs oracle",
+   "image": "synthetic/figures/fig2_grid_heatmaps.png",
+   "layout": "side",
+   "bullets": [
+    "Oracle = KL(P_true ‖ P̂), the held-out NLL with infinitely many replicates.",
+    "C1 entry-CV, C2 count split, C3 replicate and C4 cell fold-in all put their minimum on the oracle optimum.",
+    "BIC always picks k=1; AIC/train NLL always k=20."
+   ]
+  },
+  {
+   "title": "E · Criterion vs oracle across the grid",
+   "image": "synthetic/figures/fig3_criterion_vs_oracle.png",
+   "bullets": [
+    "C1 is a constant shift of the replicate experiment C3 (r ≥ 0.998): masked-entry CV is the runnable stand-in for a technical replicate."
+   ]
+  },
+  {
+   "title": "E · Model-selection regret",
+   "image": "synthetic/figures/fig4_regret.png",
+   "bullets": [
+    "Exact oracle hits: C1 11/12 (one miss, +1.5% KL), C2 6/6, C3 12/12, C4 12/12; BIC/AIC 0/12 (regret 0.05–1.1 nats)."
+   ]
+  },
+  {
+   "title": "E · Recovered vs true probabilities",
+   "image": "synthetic/figures/fig6_calibration.png",
+   "bullets": [
+    "Selected models: logit corr 0.96 / 0.92 / 0.84 / 0.83 (S1_k3 / S1_k8 / S2 / S3), well calibrated; weak priors over-confident, strong priors under-confident."
+   ]
+  },
+  {
+   "title": "E · Count splitting: right model, half-depth target",
+   "image": "synthetic/figures/fig8_count_split.png",
+   "bullets": [
+    "Poisson thinning gives two independent half-depth replicates (equations, slide 79). Use it to select (λ, k), then refit: KL 0.105 (half model) → 0.050 (depth-mapped) → 0.038 (full refit)."
+   ]
+  },
+  {
+   "title": "E · Batch (S3): shrinkage and rank do not remove it",
+   "image": "synthetic/figures/fig7_batch_S3.png",
+   "bullets": [
+    "Selected model still decodes library at 0.70–0.74 (chance 0.25). Pushing library toward chance needs k≤3, which also destroys hemilineage. Batch needs explicit covariates."
+   ]
+  },
+  {
+   "title": "E · Convergence on synthetic grids",
+   "image": "synthetic/figures/fig5_convergence.png",
+   "bullets": [
+    "Near-optimal fits converge in 34–114 iterations; capped fits are high-k/weak-prior and far from optimal, so no argmin changes."
+   ]
+  }
+ ]
+}
